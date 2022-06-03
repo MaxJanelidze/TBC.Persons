@@ -1,8 +1,0 @@
-﻿using System;
-
-namespace Shared.Application
-{
-    public class Class1
-    {
-    }
-}

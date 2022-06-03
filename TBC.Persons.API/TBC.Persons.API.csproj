@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Shared.API\Shared.API.csproj" />
     <ProjectReference Include="..\TBC.Persons.Infrastructure\TBC.Persons.Infrastructure.csproj" />
   </ItemGroup>
 

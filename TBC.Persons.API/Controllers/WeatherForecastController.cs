@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TBC.Persons.Shared.Resources;
 
 namespace TBC.Persons.API.Controllers
 {
@@ -17,10 +19,12 @@ namespace TBC.Persons.API.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IStringLocalizer<ResourceStrings> _localizer;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IStringLocalizer<ResourceStrings> localizer)
         {
             _logger = logger;
+            _localizer = localizer;
         }
 
         [HttpGet]

@@ -1,17 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
+using Microsoft.Extensions.Options;
+using Shared.API.Middlewares;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TBC.Persons.Infrastructure.Persistence.Context;
+using TBC.Persons.Application;
+using TBC.Persons.Infrastructure;
 
 namespace TBC.Persons.API
 {
@@ -24,17 +20,17 @@ namespace TBC.Persons.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("PersonsDatabase");
+            services.Configure<List<SupportedLanguage>>(Configuration.GetSection("SupportedLanguages"));
 
-            services.AddDbContext<PersonDbContext>(options => options.UseSqlServer(connectionString).UseLazyLoadingProxies().EnableSensitiveDataLogging());
+            services.AddApplicationModule(Configuration);
+            services.AddInfrastructureModule(Configuration);
 
+            services.AddLocalization();
             services.AddControllers();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -42,11 +38,15 @@ namespace TBC.Persons.API
                 app.UseDeveloperExceptionPage();
             }
 
+            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(options.Value);
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseMiddleware<LocalizationMiddleware>();
+            app.UseMiddleware<CustomExceptionMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

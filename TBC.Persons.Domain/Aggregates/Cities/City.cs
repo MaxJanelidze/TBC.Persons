@@ -9,9 +9,8 @@ namespace TBC.Persons.Domain.Aggregates.Cities
         {
         }
 
-        public City(int id, MultiLanguageString name)
+        public City(MultiLanguageString name)
         {
-            Id = id;
             Name = name;
         }
 

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TBC.Persons.Infrastructure.Persistence.Context;
+using TBC.Persons.Infrastructure.Persistence.Seed;
 
 namespace TBC.Persons.API
 {
@@ -17,6 +18,8 @@ namespace TBC.Persons.API
                 var context = scope.ServiceProvider.GetService<PersonDbContext>();
 
                 context.Database.Migrate();
+
+                DataSeeder.Seed(context).Wait();
             }
 
             host.Run();

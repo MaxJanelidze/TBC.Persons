@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
+using System.Reflection;
 using TBC.Persons.Application.Infrastructure;
 using TBC.Persons.Shared;
 
@@ -13,6 +12,8 @@ namespace TBC.Persons.Application
     {
         public static void AddApplicationModule(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+
             services.AddTransient<ApplicationContext, ApplicationContext>(sp =>
             {
                 var language = CultureInfo.CurrentCulture.Name == "ka-GE"

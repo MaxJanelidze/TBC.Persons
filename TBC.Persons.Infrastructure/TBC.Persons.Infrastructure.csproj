@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Persistence\Migrations\20220603201751_Make_PersonalNumberIndex.cs" />
+    <Compile Remove="Persistence\Migrations\20220603201751_Make_PersonalNumberIndex.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\20220603202327_Make_PersonalNumberIndex.cs" />
+    <Compile Remove="Persistence\Migrations\20220603202327_Make_PersonalNumberIndex.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.25" />
@@ -16,11 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Shared.Infrastructure\Shared.Infrastructure.csproj" />
     <ProjectReference Include="..\TBC.Persons.Application\TBC.Persons.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Persistence\Seed\" />
   </ItemGroup>
 
 </Project>

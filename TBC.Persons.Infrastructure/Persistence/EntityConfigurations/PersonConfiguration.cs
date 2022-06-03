@@ -17,7 +17,10 @@ namespace TBC.Persons.Infrastructure.Persistence.EntityConfigurations
             builder.Property(x => x.IsActive).HasDefaultValue(true);
             builder.Property(m => m.CreatedAt).HasDefaultValueSql("getdate()");
 
-            builder.Property(x => x.PersonalNumber).IsRequired();
+            builder.HasIndex(x => x.PersonalNumber);
+            builder.Property(x => x.PersonalNumber)
+                .HasMaxLength(11)
+                .IsRequired();
 
             builder.HasOne(x => x.City);
             builder.HasMany(x => x.RelatedPersons).WithOne(x => x.Person)

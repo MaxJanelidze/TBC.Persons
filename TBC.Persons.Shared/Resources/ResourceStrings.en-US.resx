@@ -123,13 +123,31 @@
   <data name="Female" xml:space="preserve">
     <value>Female</value>
   </data>
+  <data name="HasFixedLengthOf" xml:space="preserve">
+    <value>Only {0} characters are allowed</value>
+  </data>
+  <data name="HasMaxLengthOf" xml:space="preserve">
+    <value>At most {0} characters are allowed</value>
+  </data>
+  <data name="HasMinAgeRestrictionOf" xml:space="preserve">
+    <value>Allowed only for persons above {0} years</value>
+  </data>
+  <data name="HasMinLengthOf" xml:space="preserve">
+    <value>At least {0} characters are allowed</value>
+  </data>
   <data name="Male" xml:space="preserve">
     <value>Male</value>
+  </data>
+  <data name="OnlyDigits" xml:space="preserve">
+    <value>Only digits are allowed</value>
   </data>
   <data name="PersonAlreadyExists" xml:space="preserve">
     <value>Person already exists</value>
   </data>
   <data name="RecordNotFound" xml:space="preserve">
     <value>Record not found</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>Field is required</value>
   </data>
 </root>

@@ -5,7 +5,7 @@ namespace TBC.Persons.Domain.Aggregates.Cities
 {
     public class City : Entity<int>
     {
-        private City()
+        protected City()
         {
         }
 

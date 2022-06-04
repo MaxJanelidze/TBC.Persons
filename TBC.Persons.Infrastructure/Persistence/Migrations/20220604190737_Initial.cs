@@ -40,7 +40,7 @@ namespace TBC.Persons.Infrastructure.Persistence.Migrations
                     Lastname_Georgian = table.Column<string>(nullable: true),
                     Lastname_English = table.Column<string>(nullable: true),
                     Gender = table.Column<int>(nullable: false),
-                    PersonalNumber = table.Column<string>(nullable: false),
+                    PersonalNumber = table.Column<string>(maxLength: 11, nullable: false),
                     BirthDate = table.Column<DateTime>(nullable: false),
                     CityId = table.Column<int>(nullable: false),
                     PictureFileAddress = table.Column<string>(nullable: true)
@@ -78,7 +78,7 @@ namespace TBC.Persons.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RelatedPersons",
+                name: "PersonRelationships",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -88,18 +88,35 @@ namespace TBC.Persons.Infrastructure.Persistence.Migrations
                     IsDeleted = table.Column<bool>(nullable: false),
                     IsHidden = table.Column<bool>(nullable: false),
                     RelationType = table.Column<int>(nullable: false),
-                    PersonId = table.Column<int>(nullable: false)
+                    MasterPersonId = table.Column<int>(nullable: false),
+                    RelatedPersonId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RelatedPersons", x => x.Id);
+                    table.PrimaryKey("PK_PersonRelationships", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RelatedPersons_Persons_PersonId",
-                        column: x => x.PersonId,
+                        name: "FK_PersonRelationships_Persons_MasterPersonId",
+                        column: x => x.MasterPersonId,
                         principalTable: "Persons",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PersonRelationships_Persons_RelatedPersonId",
+                        column: x => x.RelatedPersonId,
+                        principalTable: "Persons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonRelationships_MasterPersonId",
+                table: "PersonRelationships",
+                column: "MasterPersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonRelationships_RelatedPersonId",
+                table: "PersonRelationships",
+                column: "RelatedPersonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Persons_CityId",
@@ -107,9 +124,10 @@ namespace TBC.Persons.Infrastructure.Persistence.Migrations
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RelatedPersons_PersonId",
-                table: "RelatedPersons",
-                column: "PersonId");
+                name: "IX_Persons_PersonalNumber",
+                table: "Persons",
+                column: "PersonalNumber",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -118,7 +136,7 @@ namespace TBC.Persons.Infrastructure.Persistence.Migrations
                 name: "PersonPhones");
 
             migrationBuilder.DropTable(
-                name: "RelatedPersons");
+                name: "PersonRelationships");
 
             migrationBuilder.DropTable(
                 name: "Persons");

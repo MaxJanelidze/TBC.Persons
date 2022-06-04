@@ -6,7 +6,7 @@ namespace TBC.Persons.Infrastructure.Persistence.EntityConfigurations
 {
     public class PersonConfiguration :
         IEntityTypeConfiguration<Person>,
-        IEntityTypeConfiguration<RelatedPerson>
+        IEntityTypeConfiguration<PersonRelationship>
     {
         public void Configure(EntityTypeBuilder<Person> builder)
         {
@@ -17,14 +17,13 @@ namespace TBC.Persons.Infrastructure.Persistence.EntityConfigurations
             builder.Property(x => x.IsActive).HasDefaultValue(true);
             builder.Property(m => m.CreatedAt).HasDefaultValueSql("getdate()");
 
-            builder.HasIndex(x => x.PersonalNumber);
-            builder.Property(x => x.PersonalNumber)
+            builder
+                .HasIndex(x => x.PersonalNumber)
+                .IsUnique();
+            builder
+                .Property(x => x.PersonalNumber)
                 .HasMaxLength(11)
                 .IsRequired();
-
-            builder.HasOne(x => x.City);
-            builder.HasMany(x => x.RelatedPersons).WithOne(x => x.Person)
-                .Metadata.PrincipalToDependent.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             builder.OwnsOne(x => x.Firstname);
             builder.OwnsOne(x => x.Lastname);
@@ -34,11 +33,24 @@ namespace TBC.Persons.Infrastructure.Persistence.EntityConfigurations
                 {
                     builder.ToTable("PersonPhones");
                 });
+
+            builder.HasOne(x => x.City);
+            builder
+                .HasMany(x => x.RelatedPersons)
+                .WithOne(x => x.MasterPerson)
+                .HasForeignKey(x => x.MasterPersonId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasMany(x => x.RelatedPersonOf)
+                .WithOne(x => x.RelatedPerson)
+                .HasForeignKey(x => x.RelatedPersonId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
-        public void Configure(EntityTypeBuilder<RelatedPerson> builder)
+        public void Configure(EntityTypeBuilder<PersonRelationship> builder)
         {
-            builder.ToTable("RelatedPersons");
+            builder.ToTable("PersonRelationships");
 
             builder.HasKey(x => x.Id);
 

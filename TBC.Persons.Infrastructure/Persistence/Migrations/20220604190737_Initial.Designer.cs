@@ -10,8 +10,8 @@ using TBC.Persons.Infrastructure.Persistence.Context;
 namespace TBC.Persons.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(PersonDbContext))]
-    [Migration("20220603202425_Make_PersonalNumberIndex")]
-    partial class Make_PersonalNumberIndex
+    [Migration("20220604190737_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -93,12 +93,13 @@ namespace TBC.Persons.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.HasIndex("PersonalNumber");
+                    b.HasIndex("PersonalNumber")
+                        .IsUnique();
 
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("TBC.Persons.Domain.Aggregates.Persons.RelatedPerson", b =>
+            modelBuilder.Entity("TBC.Persons.Domain.Aggregates.Persons.PersonRelationship", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -121,7 +122,10 @@ namespace TBC.Persons.Infrastructure.Persistence.Migrations
                     b.Property<bool>("IsHidden")
                         .HasColumnType("bit");
 
-                    b.Property<int>("PersonId")
+                    b.Property<int>("MasterPersonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RelatedPersonId")
                         .HasColumnType("int");
 
                     b.Property<int>("RelationType")
@@ -129,9 +133,11 @@ namespace TBC.Persons.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("MasterPersonId");
 
-                    b.ToTable("RelatedPersons");
+                    b.HasIndex("RelatedPersonId");
+
+                    b.ToTable("PersonRelationships");
                 });
 
             modelBuilder.Entity("TBC.Persons.Domain.Aggregates.Cities.City", b =>
@@ -233,12 +239,18 @@ namespace TBC.Persons.Infrastructure.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TBC.Persons.Domain.Aggregates.Persons.RelatedPerson", b =>
+            modelBuilder.Entity("TBC.Persons.Domain.Aggregates.Persons.PersonRelationship", b =>
                 {
-                    b.HasOne("TBC.Persons.Domain.Aggregates.Persons.Person", "Person")
+                    b.HasOne("TBC.Persons.Domain.Aggregates.Persons.Person", "RelatedPerson")
                         .WithMany("RelatedPersons")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("MasterPersonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TBC.Persons.Domain.Aggregates.Persons.Person", "MasterPerson")
+                        .WithMany("RelatedPersonOf")
+                        .HasForeignKey("RelatedPersonId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -10,19 +10,14 @@ namespace TBC.Persons.Domain.Aggregates.Persons
     public class Person : Entity<int>
     {
         private List<Phone> _phones;
-        private List<RelatedPerson> _relatedPersons;
+        private List<PersonRelationship> _relatedPersons;
+        private readonly List<PersonRelationship> _relatedPersonOf;
 
-        private Person()
+        public Person()
         {
             _phones = _phones ?? new List<Phone>();
-            _relatedPersons = _relatedPersons ?? new List<RelatedPerson>();
-        }
-
-        public Person(MultiLanguageString firstname, MultiLanguageString lastname)
-            : this()
-        {
-            Firstname = firstname;
-            Lastname = lastname;
+            _relatedPersons = _relatedPersons ?? new List<PersonRelationship>();
+            _relatedPersonOf = _relatedPersonOf ?? new List<PersonRelationship>();
         }
 
         public virtual MultiLanguageString Firstname { get; private set; }
@@ -41,11 +36,21 @@ namespace TBC.Persons.Domain.Aggregates.Persons
 
         public virtual IReadOnlyCollection<Phone> Phones => _phones;
 
-        public virtual IReadOnlyCollection<RelatedPerson> RelatedPersons => _relatedPersons;
+        public virtual IReadOnlyCollection<PersonRelationship> RelatedPersons => _relatedPersons;
+
+        public virtual IReadOnlyCollection<PersonRelationship> RelatedPersonOf => _relatedPersonOf;
 
         public virtual City City { get; private set; }
 
-        public Person AddPersonalInformation(Gender gender, DateTime birthDate, string personalNumber)
+        public Person AssignName(MultiLanguageString firstname, MultiLanguageString lastname)
+        {
+            Firstname = firstname;
+            Lastname = lastname;
+
+            return this;
+        }
+
+        public Person AssignPersonalInformation(Gender gender, DateTime birthDate, string personalNumber)
         {
             Gender = gender;
             BirthDate = birthDate;
@@ -54,7 +59,7 @@ namespace TBC.Persons.Domain.Aggregates.Persons
             return this;
         }
 
-        public Person AddContactInformation(params Phone[] phones)
+        public Person AssignContactInformation(params Phone[] phones)
         {
             if (Phones.Any())
             {
@@ -76,14 +81,17 @@ namespace TBC.Persons.Domain.Aggregates.Persons
         public void AddPictureAddress(string address)
             => PictureFileAddress = address;
 
-        public void AddRelatedPerson(params RelatedPerson[] relatedPersons)
+        public void AddRelatedPerson(Person relatedPerson, RelationType relationType)
+        {
+            _relatedPersons.Add(new PersonRelationship(relatedPerson, relationType));
+        }
+
+        public void RemoveRelatedPerson(Person relatedPerson)
         {
             if (RelatedPersons.Any())
             {
-                _relatedPersons.Clear();
+                _relatedPersons.RemoveAll(x => x.RelatedPersonId == relatedPerson.Id);
             }
-
-            _relatedPersons.AddRange(relatedPersons);
         }
     }
 

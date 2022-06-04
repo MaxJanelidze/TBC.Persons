@@ -23,8 +23,8 @@ namespace Shared.Infrastructure
         public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> expression = null)
         {
             return expression == null
-                ? _context.Set<TEntity>().AsQueryable()
-                : _context.Set<TEntity>().Where(expression);
+                ? _context.Set<TEntity>().AsQueryable().AsNoTracking()
+                : _context.Set<TEntity>().AsNoTracking().Where(expression);
         }
 
         public async Task<TEntity> OfIdAsync(T_Id id)

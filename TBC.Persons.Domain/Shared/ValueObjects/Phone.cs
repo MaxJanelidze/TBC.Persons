@@ -4,7 +4,7 @@ namespace TBC.Persons.Domain.Shared.ValueObjects
 {
     public class Phone : ValueObject<Phone>
     {
-        private Phone()
+        protected Phone()
         {
         }
 

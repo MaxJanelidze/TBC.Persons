@@ -6,7 +6,7 @@ namespace TBC.Persons.Domain.Shared.ValueObjects
 {
     public class MultiLanguageString : ValueObject<MultiLanguageString>
     {
-        private MultiLanguageString()
+        protected MultiLanguageString()
         {
         }
 

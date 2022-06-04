@@ -1,12 +1,16 @@
-﻿using System;
+﻿using MediatR;
+using Shared.Application.Mediatr;
+using System;
 using System.Collections.Generic;
 using TBC.Persons.Application.Commands.Persons.Shared;
 using TBC.Persons.Domain.Aggregates.Persons;
 
-namespace TBC.Persons.Application.Commands.Persons.Create
+namespace TBC.Persons.Application.Commands.Persons.Update
 {
-    public class CreatePersonModel
+    public class ChangePersonDetailsCommand : ICommand<Unit>
     {
+        public int Id { get; set; }
+
         public string Firstname { get; set; }
 
         public string Lastname { get; set; }

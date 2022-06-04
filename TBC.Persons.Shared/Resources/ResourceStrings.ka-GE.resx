@@ -132,4 +132,22 @@
   <data name="RecordNotFound" xml:space="preserve">
     <value>ჩანაწერი ვერ მოიძებნა</value>
   </data>
+  <data name="HasFixedLengthOf" xml:space="preserve">
+    <value>დასაშვებია მხოლოდ {0} სიმბოლო</value>
+  </data>
+  <data name="HasMaxLengthOf" xml:space="preserve">
+    <value>დასაშვებია არაუმეტეს {0} სიმბოლო</value>
+  </data>
+  <data name="HasMinAgeRestrictionOf" xml:space="preserve">
+    <value>დასაშვებია მხოლო {} წელს ზემოთ პირებისთვის</value>
+  </data>
+  <data name="HasMinLengthOf" xml:space="preserve">
+    <value>დასაშვებია არანაკლებ {0} სიმბოლო</value>
+  </data>
+  <data name="OnlyDigits" xml:space="preserve">
+    <value>გამოიყენეთ მხოლოდ ციფრები</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>ველი სავალდებულოა</value>
+  </data>
 </root>

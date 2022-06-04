@@ -60,8 +60,8 @@ namespace TBC.Persons.Infrastructure.Persistence.Seed
             var city = new City(new MultiLanguageString("ხაშური", "Khashuri"));
             return new List<Person>
             {
-                new Person(new MultiLanguageString("გელა", "Gela"), new MultiLanguageString("მენაბდე", "Menabde")).AddPersonalInformation(Gender.Male, new DateTime(1990, 2, 4), "11111111100").AssignCity(city),
-                new Person(new MultiLanguageString("გულნარა", "Gulnara"), new MultiLanguageString("ხაბაზი", "Khabazi")).AddPersonalInformation(Gender.Female, new DateTime(1993, 5, 12), "11111111000").AssignCity(city)
+                new Person().AssignName(new MultiLanguageString("გელა", "Gela"), new MultiLanguageString("მენაბდე", "Menabde")).AssignPersonalInformation(Gender.Male, new DateTime(1990, 2, 4), "11111111100").AssignCity(city),
+                new Person().AssignName(new MultiLanguageString("გულნარა", "Gulnara"), new MultiLanguageString("ხაბაზი", "Khabazi")).AssignPersonalInformation(Gender.Female, new DateTime(1993, 5, 12), "11111111000").AssignCity(city)
             };
         }
     }

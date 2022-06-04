@@ -16,5 +16,9 @@
     <ProjectReference Include="..\TBC.Persons.Infrastructure\TBC.Persons.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ActionFilters\" />
+  </ItemGroup>
+
 
 </Project>

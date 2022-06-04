@@ -1,33 +1,37 @@
-﻿using Microsoft.Extensions.Localization;
+﻿using MediatR;
+using Microsoft.Extensions.Localization;
 using Shared.Application.Mediatr;
 using Shared.Common.Exceptions;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TBC.Persons.Domain;
-using TBC.Persons.Domain.Aggregates.Persons;
 using TBC.Persons.Domain.Shared.ValueObjects;
 using TBC.Persons.Shared.Resources;
 
-namespace TBC.Persons.Application.Commands.Persons.Create
+namespace TBC.Persons.Application.Commands.Persons.Update
 {
-    public class CreatePersonCommandHandler : ICommandHandler<CreatePersonCommand, int>
+    public class ChangePersonDetailsCommandHandler : ICommandHandler<ChangePersonDetailsCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStringLocalizer<ResourceStrings> _localizer;
 
-        public CreatePersonCommandHandler(IUnitOfWork unitOfWork, IStringLocalizer<ResourceStrings> localizer)
+        public ChangePersonDetailsCommandHandler(IUnitOfWork unitOfWork, IStringLocalizer<ResourceStrings> localizer)
         {
             _unitOfWork = unitOfWork;
             _localizer = localizer;
         }
 
-        public async Task<int> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(ChangePersonDetailsCommand request, CancellationToken cancellationToken)
         {
-            if (await _unitOfWork.PersonRepository.ExistsByPersonalNumber(request.PersonalNumber))
+            var person = await _unitOfWork.PersonRepository.OfIdAsync(request.Id);
+
+            if (person == null)
+            {
+                throw new NotFoundException(_localizer["PersonNotFound"]);
+            }
+
+            if (_unitOfWork.PersonRepository.Query(x => x.PersonalNumber == request.PersonalNumber && x.Id != request.Id).Any())
             {
                 throw new ClientErrorException(_localizer["PersonAlreadyExists"].Value);
             }
@@ -39,16 +43,16 @@ namespace TBC.Persons.Application.Commands.Persons.Create
                 throw new ClientErrorException(_localizer["CityNotFound"].Value);
             }
 
-            var person = new Person()
+            person
                 .AssignName(new MultiLanguageString(request.Firstname, null), new MultiLanguageString(request.Lastname, null))
                 .AssignPersonalInformation(request.Gender, request.BirthDate, request.PersonalNumber)
                 .AssignContactInformation(request.Phones.Select(x => x.ToDomainObject()).ToArray())
                 .AssignCity(city);
 
-            await _unitOfWork.PersonRepository.InsertAsync(person, cancellationToken);
+            _unitOfWork.PersonRepository.Update(person);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return person.Id;
+            return Unit.Value;
         }
     }
 }

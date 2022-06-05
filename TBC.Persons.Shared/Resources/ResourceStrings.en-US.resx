@@ -144,6 +144,9 @@
   <data name="PersonAlreadyExists" xml:space="preserve">
     <value>Person already exists</value>
   </data>
+  <data name="PersonNotFound" xml:space="preserve">
+    <value>Person not found</value>
+  </data>
   <data name="RecordNotFound" xml:space="preserve">
     <value>Record not found</value>
   </data>

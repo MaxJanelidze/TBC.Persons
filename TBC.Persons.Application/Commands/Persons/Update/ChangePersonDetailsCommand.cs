@@ -2,7 +2,7 @@
 using Shared.Application.Mediatr;
 using System;
 using System.Collections.Generic;
-using TBC.Persons.Application.Commands.Persons.Shared;
+using TBC.Persons.Application.Shared.Models;
 using TBC.Persons.Domain.Aggregates.Persons;
 
 namespace TBC.Persons.Application.Commands.Persons.Update

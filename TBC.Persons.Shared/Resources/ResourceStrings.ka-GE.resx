@@ -150,4 +150,7 @@
   <data name="RequiredField" xml:space="preserve">
     <value>ველი სავალდებულოა</value>
   </data>
+  <data name="PersonNotFound" xml:space="preserve">
+    <value>პიროვნება ვერ მოიძებნა</value>
+  </data>
 </root>

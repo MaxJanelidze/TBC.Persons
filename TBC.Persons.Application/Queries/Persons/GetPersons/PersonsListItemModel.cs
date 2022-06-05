@@ -1,6 +1,6 @@
-﻿namespace TBC.Persons.Application.Queries.GetPersons
+﻿namespace TBC.Persons.Application.Queries.Persons.GetPersons
 {
-    public class PersonModel
+    public class PersonsListItemModel
     {
         public int Id { get; set; }
 

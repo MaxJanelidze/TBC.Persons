@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using TBC.Persons.Application.Shared.Models;
 using TBC.Persons.Domain.Aggregates.Persons;
 
-namespace TBC.Persons.Application.Commands.Persons.Create
+namespace TBC.Persons.Application.Queries.Persons.GetPerson
 {
-    public class CreatePersonModel
+    public class PersonModel
     {
+        public int Id { get; set; }
+
         public string Firstname { get; set; }
 
         public string Lastname { get; set; }
@@ -19,6 +21,10 @@ namespace TBC.Persons.Application.Commands.Persons.Create
 
         public int CityId { get; set; }
 
+        public string PictureFileAddress { get; set; }
+
         public IEnumerable<Phone> Phones { get; set; }
+
+        public IEnumerable<RelatedPerson> RelatedPersons { get; set; }
     }
 }

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="ActionFilters\" />
+    <Folder Include="Resources\Pictures\" />
   </ItemGroup>
 
 

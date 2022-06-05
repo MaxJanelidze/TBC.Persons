@@ -1,6 +1,6 @@
 ﻿using TBC.Persons.Domain.Shared.ValueObjects;
 
-namespace TBC.Persons.Application.Commands.Persons.Shared
+namespace TBC.Persons.Application.Shared.Models
 {
     public class Phone
     {

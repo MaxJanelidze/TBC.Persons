@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using TBC.Persons.Application.Commands.Persons.Create;
 using TBC.Persons.Application.Commands.Persons.Update;
-using TBC.Persons.Application.Queries.GetPersons;
+using TBC.Persons.Application.Queries.Persons.GetPersons;
 
 namespace TBC.Persons.Application.MappingProfiles
 {

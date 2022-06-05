@@ -4,13 +4,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TBC.Persons.Application.Commands.Persons.AddRelatedPerson;
 using TBC.Persons.Application.Commands.Persons.Create;
 using TBC.Persons.Application.Commands.Persons.Delete;
 using TBC.Persons.Application.Commands.Persons.RemoveRelatedPerson;
 using TBC.Persons.Application.Commands.Persons.Update;
-using TBC.Persons.Application.Queries.GetPersons;
+using TBC.Persons.Application.Commands.Persons.UploadPicture;
+using TBC.Persons.Application.Queries.Persons.GetPerson;
+using TBC.Persons.Application.Queries.Persons.GetPersons;
+using TBC.Persons.Application.Queries.Persons.GetRelationshipReport;
 
 namespace TBC.Persons.API.Controllers
 {
@@ -28,7 +32,7 @@ namespace TBC.Persons.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<PersonModel>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(IEnumerable<PersonsListItemModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPersons([FromQuery] GetPersonsModel request)
         {
             var query = _mapper.Map<GetPersonsModel, GetPersonsQuery>(request);
@@ -46,6 +50,16 @@ namespace TBC.Persons.API.Controllers
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
 
             return Ok(result.Data);
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(PersonModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetPerson([FromRoute] int id)
+        {
+            var query = new GetPersonQuery { Id = id };
+            var person = await _mediator.Send(query);
+
+            return Ok(person);
         }
 
         [HttpPost]
@@ -111,6 +125,28 @@ namespace TBC.Persons.API.Controllers
             await _mediator.Send(command);
 
             return NoContent();
+        }
+
+        [HttpGet("relationship-report")]
+        [ProducesResponseType(typeof(IEnumerable<RelationshipReportItem>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetRelationshipReport()
+        {
+            var result = await _mediator.Send(new GetRelationshipReportQuery());
+
+            return Ok(result);
+        }
+
+        [HttpPost("{personId}/upload-picture")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UploadPicture([FromRoute] int personId, IFormFile file)
+        {
+            var pictureAddress = await _mediator.Send(new UploadPictureCommand
+            {
+                PersonId = personId,
+                Picture = file
+            });
+
+            return Ok(pictureAddress);
         }
     }
 }

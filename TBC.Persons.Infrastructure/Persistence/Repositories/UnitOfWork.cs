@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 using TBC.Persons.Domain;
 using TBC.Persons.Domain.Aggregates.Cities.Repositories;
@@ -25,6 +27,11 @@ namespace TBC.Persons.Infrastructure.Persistence.Repositories
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             return await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public IDbConnection GetDbConnection()
+        {
+            return _context.Database.GetDbConnection();
         }
 
         public void Dispose()

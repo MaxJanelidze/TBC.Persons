@@ -1,11 +1,9 @@
-﻿using Shared.Application.Mediatr;
-using Shared.Application.PagedList;
-using Shared.Application.Pagination;
+﻿using Shared.Application.PagedList;
 using TBC.Persons.Domain.Aggregates.Persons;
 
-namespace TBC.Persons.Application.Queries.GetPersons
+namespace TBC.Persons.Application.Queries.Persons.GetPersons
 {
-    public class GetPersonsQuery : SortedAndPagedListRequestBase, IQuery<PagedList<PersonModel>>
+    public class GetPersonsModel : SortedAndPagedListRequestBase
     {
         public string Search { get; set; }
 

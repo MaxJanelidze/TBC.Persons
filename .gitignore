@@ -363,3 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 
 TBC.Persons.API/Resources/Pictures/*
+
+# exception to the rule
+!TBC.Persons.API/Resources/Pictures/.gitkeep 

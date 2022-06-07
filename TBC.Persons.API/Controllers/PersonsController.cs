@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Shared.API.ActionFilters;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,6 +33,7 @@ namespace TBC.Persons.API.Controllers
         }
 
         [HttpGet]
+        [PaginationHeader]
         [ProducesResponseType(typeof(IEnumerable<PersonsListItemModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPersons([FromQuery] GetPersonsModel request)
         {
@@ -39,17 +41,7 @@ namespace TBC.Persons.API.Controllers
 
             var result = await _mediator.Send(query);
 
-            var paginationMetadata = new
-            {
-                totalCount = result.TotalCount,
-                pageSize = result.PageSize,
-                currentPage = result.CurrentPage,
-                totalPages = result.TotalPages
-            };
-
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
-
-            return Ok(result.Data);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

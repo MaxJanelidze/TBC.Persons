@@ -1,6 +1,6 @@
 ﻿namespace Shared.Application.PagedList
 {
-    public class PagedListRequestBase
+    public abstract class PagedListRequestBase
     {
         public int PageSize { get; set; } = 10;
 

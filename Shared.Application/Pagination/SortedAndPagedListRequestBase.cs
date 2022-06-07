@@ -1,6 +1,6 @@
 ﻿namespace Shared.Application.PagedList
 {
-    public class SortedAndPagedListRequestBase : PagedListRequestBase
+    public abstract class SortedAndPagedListRequestBase : PagedListRequestBase
     {
         public string SortBy { get; set; }
 

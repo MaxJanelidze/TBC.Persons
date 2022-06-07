@@ -5,6 +5,10 @@ namespace Shared.Application.Pagination
 {
     public class PagedList<T>
     {
+        public PagedList()
+        {
+        }
+
         public PagedList(IEnumerable<T> data, int totalCount, int pageSize, int currentPage)
         {
             TotalCount = totalCount;

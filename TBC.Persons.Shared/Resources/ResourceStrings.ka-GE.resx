@@ -153,4 +153,7 @@
   <data name="PersonNotFound" xml:space="preserve">
     <value>პიროვნება ვერ მოიძებნა</value>
   </data>
+  <data name="IncorrectCharacters" xml:space="preserve">
+    <value>უნდა შეიცავდეს ლათინურ ან ქართულ სიმბოლოებს</value>
+  </data>
 </root>

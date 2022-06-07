@@ -6,11 +6,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using TBC.Persons.Shared.Resources;
 
-namespace TBC.Persons.Application.Commands.Persons.Create
+namespace TBC.Persons.Application.Commands.Persons.Update
 {
-    public class CreatePersonModelValidator : AbstractValidator<CreatePersonModel>
+    public class ChangePersonDetailsModelValidator : AbstractValidator<ChangePersonDetailsModel>
     {
-        public CreatePersonModelValidator(IStringLocalizer<ResourceStrings> localizer)
+        public ChangePersonDetailsModelValidator(IStringLocalizer<ResourceStrings> localizer)
         {
             RuleFor(x => x.Firstname).NotEmpty().WithMessage(localizer["RequiredField"].Value);
             RuleFor(x => x.Firstname).Must(x => !string.IsNullOrWhiteSpace(x) && (Regex.IsMatch(x, "^[a-zA-Z]*$") || Regex.IsMatch(x, "^[ა-ჰ]*$"))).WithMessage(localizer["IncorrectCharacters"].Value);

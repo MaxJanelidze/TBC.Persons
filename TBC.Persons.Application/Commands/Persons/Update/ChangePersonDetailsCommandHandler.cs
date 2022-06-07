@@ -24,12 +24,7 @@ namespace TBC.Persons.Application.Commands.Persons.Update
 
         public async Task<Unit> Handle(ChangePersonDetailsCommand request, CancellationToken cancellationToken)
         {
-            var person = await _unitOfWork.PersonRepository.OfIdAsync(request.Id);
-
-            if (person == null)
-            {
-                throw new NotFoundException(_localizer["PersonNotFound"]);
-            }
+            var person = await _unitOfWork.PersonRepository.TryGetPerson(request.Id);
 
             if (_unitOfWork.PersonRepository.Query(x => x.PersonalNumber == request.PersonalNumber && x.Id != request.Id).Any())
             {
